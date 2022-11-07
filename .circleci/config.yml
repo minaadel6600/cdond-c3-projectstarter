@@ -45,10 +45,10 @@ jobs:
           command: cd frontend
       - run:
           name: npm-install
-          command: npm install
+          command: cd frontend && npm install
       - run:
           name: npm-build
-          command: npm run build
+          command: cd frontend && npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -65,10 +65,10 @@ jobs:
           command: cd backend
       - run:
           name: npm-install
-          command: npm install
+          command: cd frontend && npm install
       - run:
           name: npm-build
-          command: npm run build
+          command: cd frontend && npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
