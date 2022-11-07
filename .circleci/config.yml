@@ -41,9 +41,6 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run:
-          name: Build front-end
-          command: |
-      - run:
           name: cd-frontend
           command: cd frontend
       - run:
@@ -63,9 +60,6 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run:
-          name: Back-end build
-          command: |
       - run:
           name: cd-backend
           command: cd backend
