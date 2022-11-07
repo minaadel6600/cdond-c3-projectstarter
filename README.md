@@ -24,7 +24,7 @@ In this project, you will prove your mastery of the following learning objective
 
 ### Project Submission
 
-For your submission, please submit the following:
+For your submission, please submit the followingg:
 
 - A text file named `urls.txt` including:
   1. Public Url to GitHub repository (not private) [URL01]
