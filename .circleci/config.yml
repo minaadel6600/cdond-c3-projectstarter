@@ -107,8 +107,8 @@ jobs:
           name: cd-backend
           command: cd backend
       - run:
-          name: cd backend && npm-install
-          command: npm install 
+          name:  npm-install
+          command: cd backend && npm install 
       - run:
           name: npm-test
           command: cd backend && npm run test
