@@ -117,6 +117,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - checkout
       - run:
           name: cd-frontend
           command: cd frontend
@@ -130,6 +131,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - checkout
       - run:
           name: cd-backend
           command: cd backend
