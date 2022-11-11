@@ -201,10 +201,10 @@ jobs:
           name: cd backend && npm install
           command: |
             cd backend && npm install
-      - run:
-          name: Run migrations
-          command: |
-            cd backend && npm run migrations > migrations_dump.txt            
+      # - run:
+      #     name: Run migrations
+      #     command: |
+      #       cd backend && npm run migrations > migrations_dump.txt            
       - run:
           name: Send migration results to memstash
           command: |
