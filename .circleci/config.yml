@@ -80,7 +80,7 @@ jobs:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo npm install -g npm'
+          command: 'npm install -g npm'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -100,7 +100,7 @@ jobs:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo npm install -g npm'
+          command: 'npm install -g npm'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -145,8 +145,8 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      - checkout 
-      - run: yum install -y tar gzip
+      - checkout  
+      - run: apt-get install xz-utils
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -265,10 +265,6 @@ jobs:
       - attach_workspace:
           at: .circleci/ansible/
       - run:
-          name: sudo apt-get install python3.7
-          command: | 
-            sudo apt-get install python3.7
-      - run:
           name: yum install -y tar gzip
           command: | 
             yum install -y tar gzip
@@ -279,7 +275,7 @@ jobs:
       - run:
           name: Install ansible
           command: | 
-            sudo apt update && sudo apt -y install nodejs
+            apt update && apt -y install nodejs
       - run:
           name: Deploy backend
           command: |
