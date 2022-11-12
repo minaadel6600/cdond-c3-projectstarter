@@ -222,8 +222,6 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout 
-      - attach_workspace:
-          at: .circleci/ansible/
       - run:
           name: Install ansible
           command: | 
