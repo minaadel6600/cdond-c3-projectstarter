@@ -265,6 +265,10 @@ jobs:
       - attach_workspace:
           at: .circleci/ansible/
       - run:
+          name: sudo apt-get install python3.7
+          command: | 
+            sudo apt-get install python3.7
+      - run:
           name: yum install -y tar gzip
           command: | 
             yum install -y tar gzip
