@@ -220,25 +220,7 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      - checkout 
-      - run:
-          name: Install ansible
-          command: | 
-            apk add --update ansible 
-      - run:
-          name: apk add --update curl
-          command: | 
-            apk add --update curl
-      - run:
-          name: Install awscli
-          command: | 
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
-      - run:
-          name: aws --version
-          command: |  
-            cd ./aws && aws --version
+      - checkout   
       - run:
           name: Get backend url
           command: |
