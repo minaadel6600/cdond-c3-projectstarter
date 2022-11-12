@@ -224,12 +224,11 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(/usr/local/bin/aws ec2 describe-instances \
+            export BACKEND_IP=$(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:backend-${CIRCLE_WORKFLOW_ID:0:7}")
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-            cat frontend/.env
+            echo "${API_URL}" 
       - run:
           name: cd frontend & npm install
           command: | 
