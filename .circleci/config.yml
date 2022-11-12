@@ -221,8 +221,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout 
-      - attach_workspace:
-          at: .circleci/ansible/
+      - run:
+          name: yum install -y tar gzip
+          command: | 
+            yum install -y tar gzip
       - run:
           name: Install ansible
           command: | 
@@ -244,10 +246,6 @@ jobs:
           name: cd frontend & npm run build
           command: | 
             cd frontend & npm run build
-      - run:
-          name: yum install -y tar gzip
-          command: | 
-            yum install -y tar gzip
       - run:
           name: tar -czvf artifact
           command: | 
