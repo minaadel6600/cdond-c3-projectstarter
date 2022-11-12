@@ -80,7 +80,7 @@ jobs:
       - checkout
       - run:
           name: update-npm
-          command: 'npm install -g npm'
+          command: 'sudo npm install -g npm'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -100,7 +100,7 @@ jobs:
       - checkout
       - run:
           name: update-npm
-          command: 'npm install -g npm'
+          command: 'sudo npm install -g npm'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -145,8 +145,8 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      - checkout  
-      - run: apt-get install xz-utils
+      - checkout 
+      - run: yum install -y tar gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -219,12 +219,11 @@ jobs:
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       - checkout 
-      - run:
-          name: yum install -y tar gzip
-          command: | 
-            yum install -y tar gzip
+      - attach_workspace:
+          at: .circleci/ansible/
       - run:
           name: Install ansible
           command: | 
@@ -246,6 +245,10 @@ jobs:
           name: cd frontend & npm run build
           command: | 
             cd frontend & npm run build
+      - run:
+          name: yum install -y tar gzip
+          command: | 
+            yum install -y tar gzip
       - run:
           name: tar -czvf artifact
           command: | 
@@ -275,7 +278,7 @@ jobs:
       - run:
           name: Install ansible
           command: | 
-            apt update && apt -y install nodejs
+            sudo apt update && sudo apt -y install nodejs
       - run:
           name: Deploy backend
           command: |
@@ -346,7 +349,7 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+      # - smoke-test:
+      #     requires: [deploy-backend, deploy-frontend]
