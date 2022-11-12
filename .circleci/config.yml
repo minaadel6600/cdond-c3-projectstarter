@@ -234,9 +234,13 @@ jobs:
           command: | 
             yum install -y tar gzip
       - run:
-          name: yum install npm
+          name: yum install nodejs 
           command: | 
-            yum install npm
+            yum install nodejs 
+      - run:
+          name: npm install -g npm
+          command: | 
+           npm install -g npm 
       - run:
           name: cd frontend & npm install
           command: | 
