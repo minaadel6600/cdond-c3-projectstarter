@@ -88,7 +88,7 @@ jobs:
           command: cd frontend
       - run:
           name: npm-install
-          command: cd frontend && npm install 
+          command: cd frontend && npm install --force
       - run:
           name: npm-test
           command: cd frontend && npm run test
@@ -108,7 +108,7 @@ jobs:
           command: cd backend
       - run:
           name:  npm-install
-          command: cd backend && npm install 
+          command: cd backend && npm install --force
       - run:
           name: npm-test
           command: cd backend && npm run test
