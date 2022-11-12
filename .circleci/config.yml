@@ -238,7 +238,7 @@ jobs:
       - run:
           name: aws --version
           command: |  
-            aws --version
+            cd ./aws && aws --version
       - run:
           name: Get backend url
           command: |
