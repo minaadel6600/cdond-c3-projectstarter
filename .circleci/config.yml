@@ -237,8 +237,7 @@ jobs:
             ./aws/install
       - run:
           name: aws --version
-          command: | 
-            /usr/local/bin/aws --version
+          command: |  
             aws --version
       - run:
           name: Get backend url
