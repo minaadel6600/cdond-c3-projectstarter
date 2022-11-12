@@ -226,6 +226,12 @@ jobs:
           command: | 
             apk add --update ansible 
       - run:
+          name: Install awscli
+          command: | 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
