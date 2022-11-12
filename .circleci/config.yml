@@ -230,6 +230,14 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}" 
       - run:
+          name: yum install -y tar gzip
+          command: | 
+            yum install -y tar gzip
+      - run:
+          name: yum install npm
+          command: | 
+            yum install npm
+      - run:
           name: cd frontend & npm install
           command: | 
             cd frontend & npm install 
@@ -237,10 +245,7 @@ jobs:
           name: cd frontend & npm run build
           command: | 
             cd frontend & npm run build
-      - run:
-          name: yum install -y tar gzip
-          command: | 
-            yum install -y tar gzip
+
       - run:
           name: tar -czvf artifact
           command: | 
