@@ -236,7 +236,7 @@ jobs:
       - run:
           name: yum install nodejs 
           command: | 
-            yum install nodejs 
+            sudo yum install -y nodejs
       - run:
           name: npm install -g npm
           command: | 
