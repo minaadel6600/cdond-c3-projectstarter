@@ -218,7 +218,7 @@ jobs:
      # Here's where you will add some code to rollback on failure 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: sleavely/node-awscli:14.x
     steps:
       - checkout   
       - run:
@@ -232,15 +232,7 @@ jobs:
       - run:
           name: yum install -y tar gzip
           command: | 
-            yum install -y tar gzip
-      - run:
-          name: yum install nodejs 
-          command: | 
-            yum install -y nodejs
-      - run:
-          name: npm install -g npm
-          command: | 
-           npm install -g npm 
+            yum install -y tar gzip  
       - run:
           name: cd frontend & npm install
           command: | 
