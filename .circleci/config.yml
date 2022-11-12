@@ -216,21 +216,155 @@ jobs:
               curl https://kvdb.io/FA58Y7TB9euJQRoJ9PxQr4/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
      # Here's where you will add some code to rollback on failure 
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout 
+      - attach_workspace:
+          at: .circleci/ansible/
+      - run:
+          name: Install ansible
+          command: | 
+            apk add --update ansible 
+      - run:
+          name: Get backend url
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:backend-${CIRCLE_WORKFLOW_ID:0:7}")
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            cat frontend/.env
+      - run:
+          name: cd frontend & npm install
+          command: | 
+            cd frontend & npm install 
+      - run:
+          name: cd frontend & npm run build
+          command: | 
+            cd frontend & npm run build
+      - run:
+          name: yum install -y tar gzip
+          command: | 
+            yum install -y tar gzip
+      - run:
+          name: tar -czvf artifact
+          command: | 
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+      - run:
+          name: tar -czvf artifact
+          command: | 
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+              fingerprints: ["55:3c:df:5c:1e:6e:a4:70:40:c7:72:31:c0:68:d3:d7"] 
+      - attach_workspace:
+          at: .circleci/ansible/
+      - run:
+          name: yum install -y tar gzip
+          command: | 
+            yum install -y tar gzip
+      - run:
+          name: Install ansible
+          command: | 
+            apk add --update ansible 
+      - run:
+          name: Install ansible
+          command: | 
+            sudo apt update && sudo apt -y install nodejs
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+      - run:
+          name: cd backend && npm install
+          command: | 
+            cd backend && npm install 
+      - run:
+          name: cd backend && npm run build
+          command: | 
+            cd backend && npm run build
+      - run:
+          name: Zip the directory
+          command: | 
+            cd .. && tar -C backend -czvf artifact.tar.gz .
+      - run:
+          name: cd .circleci/ansible && cat inventory.txt
+          command: | 
+            cd .circleci/ansible && cat inventory.txt
+      - run:
+          name: cd .circleci/ansible && cat inventory.txt
+          command: | 
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure
+  smoke-test:
+    docker:
+      - image: alpine:latest
+    steps:
+      - checkout
+      - run:
+          name: Install curl
+          command: |
+            apk add --update curl
+      - run:
+          name: Get backend url
+          command: |
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+      - run:
+          name: Backend smoke test.
+          command: |
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+              URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
+              echo ${URL} 
+              if curl -s ${URL} | grep "Welcome"
+              then
+                  # Change this to 0 after the job fails
+                return 1
+              else
+                return 1
+              fi  
 workflows:
   default:
     jobs:
-      - run-migrations
-      # - deploy-infrastructure
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [test-feature-branch]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
