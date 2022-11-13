@@ -253,11 +253,7 @@ jobs:
       - add_ssh_keys:
               fingerprints: ["55:3c:df:5c:1e:6e:a4:70:40:c7:72:31:c0:68:d3:d7"] 
       - attach_workspace:
-          at: .circleci/ansible/
-      - run:
-          name: yum install -y tar gzip
-          command: | 
-            yum install -y tar gzip
+          at: .circleci/ansible/ 
       - run:
           name: Install ansible
           command: | 
@@ -332,11 +328,9 @@ workflows:
       - deploy-infrastructure
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      # - deploy-backend:
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
       #     requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - deploy-backend:
+          requires: [deploy-infrastructure] 
