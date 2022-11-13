@@ -1,6 +1,23 @@
 version: 2.1
 
 commands:
+  install-awscli:
+    description: Install aws cli 
+    steps:
+      - run: 
+          name : install aws cli
+          command : |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+  install-ansible:
+    description: Install ansible 
+    steps:
+      - run: 
+          name : install ansible
+          command : |
+            sudo apt update
+            python3 -m pip install --user ansible
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -123,9 +140,10 @@ jobs:
             npm audit fix --audit-level=critical --force  
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/base:stable
     steps:
-      - checkout 
+      - checkout
+      - install-awscli
       - run: yum install -y tar gzip
       - run:
           name: Ensure back-end infrastructure exists
