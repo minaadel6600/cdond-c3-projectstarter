@@ -80,8 +80,9 @@ jobs:
       - run:
           name: npm unit test
           command: |
-            cd frontend  
-            npm install
+            cd frontend 
+            npm cache clean --force 
+            npm install --force
             npm run test
       
   test-backend:
