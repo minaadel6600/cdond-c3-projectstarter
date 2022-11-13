@@ -273,7 +273,7 @@ jobs:
       - run:
           name: Zip the directory
           command: | 
-            cd .. && tar -C backend -czvf artifact.tar.gz .
+            tar -C backend -czvf artifact.tar.gz .
       - run:
           name: cd .circleci/ansible && cat inventory.txt
           command: | 
