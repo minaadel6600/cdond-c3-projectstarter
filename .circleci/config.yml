@@ -71,10 +71,7 @@ jobs:
     docker:
       - image: cimg/node:13.8.0
     steps:
-      - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm'
+      - checkout 
       - restore_cache:
           keys: [frontend-deps]
       - run:
@@ -88,10 +85,7 @@ jobs:
     docker:
       - image: cimg/node:13.8.0
     steps:
-      - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm'
+      - checkout 
       - restore_cache:
           keys: [backend-deps]  
       - run:
