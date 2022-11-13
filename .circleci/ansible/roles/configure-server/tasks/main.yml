@@ -1,9 +1,4 @@
 ---
-- name: "upgrade packages."
-  become: true
-  apt:
-    upgrade: "yes"
-
 - name: "Add nodejs from nodesource"
   become: true
   shell: |
@@ -22,5 +17,3 @@
   npm:
     name: pm2
     global: yes
-    production: yes
-    state: present
