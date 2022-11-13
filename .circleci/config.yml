@@ -259,9 +259,9 @@ jobs:
           command: | 
             apk add --update ansible 
       - run:
-          name: Install ansible
+          name: apk add --update nodejs npm
           command: | 
-             apk add -y install nodejs
+             apk add --update nodejs npm
       - run:
           name: cd backend && npm install
           command: | 
