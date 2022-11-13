@@ -261,11 +261,7 @@ jobs:
       - run:
           name: Install ansible
           command: | 
-            sudo apt update && sudo apt -y install nodejs
-      - run:
-          name: Deploy backend
-          command: |
-            # your code here
+             apk add -y install nodejs
       - run:
           name: cd backend && npm install
           command: | 
@@ -326,8 +322,8 @@ workflows:
   default:
     jobs:
       - deploy-infrastructure
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
