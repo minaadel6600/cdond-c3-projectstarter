@@ -234,9 +234,7 @@ jobs:
       - run:
           name: yum install nodejs14 
           command: | 
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            nvm install node 
-            node --version
+            syum install nodejs npm --enablerepo=epel
       - run:
           name: npm install -g npm
           command: | 
