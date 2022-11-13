@@ -35,43 +35,37 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
-      - run:
-          name: cd-frontend
-          command: cd frontend
+          keys: [frontend-deps]
       - run:
           name: npm-install
-          command: cd frontend && npm install
-      - run:
-          name: npm-build
-          command: cd frontend && npm run build
+          command: |
+            cd frontend 
+            npm install
+            npm run build 
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
+          key: frontend-deps
 
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
-      - run:
-          name: cd-backend
-          command: cd backend
+          keys: [backend-deps] 
       - run:
           name: npm-install
-          command: cd backend && npm install
-      - run:
-          name: npm-build
-          command: cd backend && npm run build
+          command: |
+            cd backend 
+            npm install
+            npm run build 
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build
+          key: backend-deps
           
   test-frontend:
     docker:
@@ -194,7 +188,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - run:
@@ -321,12 +315,14 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-infrastructure
+      - build-frontend
+      - build-backend
+      #- deploy-infrastructure
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
-      - deploy-backend:
-          requires: [deploy-infrastructure] 
+      # - deploy-backend:
+      #     requires: [deploy-infrastructure] 
