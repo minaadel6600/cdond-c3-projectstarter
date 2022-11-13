@@ -80,9 +80,8 @@ jobs:
       - run:
           name: npm unit test
           command: |
-            cd frontend 
-            npm cache clean --force 
-            npm install --force
+            cd frontend  
+            npm install
             npm run test
       
   test-backend:
@@ -98,9 +97,8 @@ jobs:
       - run:
           name:  back-end test
           command: | 
-            cd backend 
-            npm cache clean --force 
-            npm install --force
+            cd backend  
+            npm install 
             npm-test 
         
   scan-frontend:
