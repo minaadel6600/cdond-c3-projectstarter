@@ -339,4 +339,4 @@ workflows:
             branches:
               only: [master]
       - configure-infrastructure:
-          requires: [master]      
+          requires: [deploy-infrastructure]      
