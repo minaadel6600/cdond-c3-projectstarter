@@ -234,7 +234,10 @@ jobs:
       - run:
           name: yum install nodejs14 
           command: | 
-            yum install nodejs14
+            yum update
+            yum install epel-release
+            yum install nodejs
+            node --version
       - run:
           name: npm install -g npm
           command: | 
