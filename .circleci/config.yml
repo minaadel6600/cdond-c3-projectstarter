@@ -18,7 +18,7 @@ commands:
           command : |
             sudo apt-add-repository ppa:ansible/ansible
             sudo apt update
-            sudo apt install ansible -y
+            sudo apt install ansible
   install-nodejs:
     description: install nodejs
     steps:
@@ -228,7 +228,7 @@ jobs:
       - revert-migrations 
   deploy-frontend:
     docker:
-      - image: cimg/python:3.10
+      - image: cimg/node:13.8.0
     steps:
       - checkout   
       - install-awscli
