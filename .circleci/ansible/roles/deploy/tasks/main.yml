@@ -17,10 +17,15 @@
     cd ~/backend-app
     npm i
 
-- name: "execute the backend"
-  become: true
-  shell: | 
+- name: "Executing Node app with PM2"
+  shell: |
     cd ~/backend-app/dist
-    pm2 stop default -y
-    pm2 start main.js -y
+    pm2 stop default
+    pm2 start main.js
+
+  register: execute_node
+
+- name: print message
+  debug:
+    msg: "{{ execute_node.stdout_lines }}"
  

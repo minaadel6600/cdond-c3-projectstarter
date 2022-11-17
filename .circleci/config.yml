@@ -262,7 +262,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/node:13.8.0
+      - image: cimg/python:3.10
     steps:
       - checkout
       - install-ansible
