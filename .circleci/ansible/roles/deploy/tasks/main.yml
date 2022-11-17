@@ -1,45 +1,23 @@
 ---
-- name: "update apt packages."
-  become: yes
-  apt:
-    update_cache: yes
 
-- name: "upgrade packages"
-  become: yes
-  apt:
-    upgrade: yes
-
-
-- name: remove dependencies that are no longer required
-  become: yes
-  apt:
-    autoremove: yes
-
-- name: "install dependencies."
-  become: yes
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
-
-- name: "install pm2"
-  become: yes
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
-
-- name: Creates directory
-  file:
-    path: ~/web
+- name : "create backend dir"
+  files:
+    path: ~/backend-app
     state: directory
 
-- name: Copy index test page
-  template:
-    src: "files/index.js"
-    dest: "~/web/index.js"
+- name: "unarchive backend files"
+  unarchive:
+    src: artifact.tar.gz
+    dist: ~/backend-app 
 
-- name: Executing node
+- name: "install dependencies" 
   shell: |
-    pm2 start ~/web/index.js -f
+    cd ~/backend-app
+    npm i
+
+- name: "execute the backend"
+  shell: | 
+    cd ~/backend-app/dist
+    pm2 stop default
+    pm2 start main.js
+ 
