@@ -265,15 +265,15 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - install-ansible
       - install-awscli
+      - install-ansible
       - install-nodejs
       - add_ssh_keys:
               fingerprints: ["55:3c:df:5c:1e:6e:a4:70:40:c7:72:31:c0:68:d3:d7"] 
-      - restore_cache:
-          keys: [backend-deps]
       - attach_workspace:
           at: ~/
+      - restore_cache:
+          keys: [backend-deps]
       - run:
           name: cd backend && npm install
           command: | 
