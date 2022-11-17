@@ -228,7 +228,7 @@ jobs:
       - revert-migrations 
   deploy-frontend:
     docker:
-      - image: cimg/node:13.8.0
+      - image: cimg/python:3.10
     steps:
       - checkout   
       - install-awscli
@@ -270,10 +270,10 @@ jobs:
       - install-nodejs
       - add_ssh_keys:
               fingerprints: ["55:3c:df:5c:1e:6e:a4:70:40:c7:72:31:c0:68:d3:d7"] 
-      - attach_workspace:
-          at: ~/
       - restore_cache:
           keys: [backend-deps]
+      - attach_workspace:
+          at: ~/
       - run:
           name: cd backend && npm install
           command: | 

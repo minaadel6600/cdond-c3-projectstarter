@@ -1,18 +1,15 @@
 ---
-
-- name : "create backend dir"
+- name: "Creates backend app directory"
   file:
     path: ~/backend-app
     state: directory
 
-- name: "unarchive backend files"
-  become: true
+- name: "Unarchive backend files"
   unarchive:
     src: artifact.tar.gz
-    dist: ~/backend-app 
+    dest: ~/backend-app
 
 - name: "install dependencies" 
-  become: true
   shell: |
     cd ~/backend-app
     npm i
