@@ -1,7 +1,7 @@
 ---
 
 - name : "create backend dir"
-  files:
+  file:
     path: ~/backend-app
     state: directory
 
