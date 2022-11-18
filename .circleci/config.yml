@@ -212,7 +212,7 @@ jobs:
       - checkout
       - install-awscli
       - run:
-          name: cd backend && npm install
+          name:  npm install && cd migrations 
           command: |
             cd backend 
             npm install
