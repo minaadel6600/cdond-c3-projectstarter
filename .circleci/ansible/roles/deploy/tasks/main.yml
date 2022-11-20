@@ -26,4 +26,9 @@
   debug:
     msg: "{{ execute_node.stdout_lines }}" 
 
+- name: "Executing Node app with PM2"
+  become: true
+  shell: |
+    sudo su -c "env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu"
+    pm2 save
  
